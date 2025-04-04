@@ -2,9 +2,10 @@ package com.encora.todoapp_be.service;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import org.springframework.stereotype.Service;
 import com.encora.todoapp_be.model.TodoModel;
 
+@Service
 public class TodoService {
     private final List<TodoModel> todos = new ArrayList<>();
 
