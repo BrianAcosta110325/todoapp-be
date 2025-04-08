@@ -16,21 +16,19 @@ public class TodoModel {
     @Size(max = 120, message = "Text cannot exceed 120 characters")
     private String text;
 
-    @NotNull(message = "DueDate cannot be null")
     private LocalDateTime dueDate;
 
-    private LocalDateTime doneDate;
+    private Instant doneDate;
 
-    private boolean completed;
+    private Boolean completed;
 
     @NotNull(message = "Priority cannot be null")
     private Priority priority;
 
-    public TodoModel(String text, LocalDateTime dueDate, LocalDateTime doneDate, Priority priority) {
+    public TodoModel(String text, LocalDateTime dueDate, Priority priority) {
         this.createdAt = Instant.now();
         this.text = text;
         this.dueDate = dueDate;
-        this.doneDate = doneDate;
         this.completed = false;
         this.priority = priority;
     }
@@ -77,11 +75,11 @@ public class TodoModel {
         this.dueDate = dueDate;
     }
 
-    public LocalDateTime getDoneDate() {
+    public Instant getDoneDate() {
         return this.doneDate;
     }
-    public void setDoneDate(LocalDateTime doneDate) {
-        this.doneDate = doneDate;
+    public void setDoneDate() {
+        this.doneDate = Instant.now();
     }
 
     public boolean isCompleted() {
