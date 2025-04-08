@@ -42,6 +42,7 @@ public class TodoController {
     public ResponseEntity<TodoModel> addTodo(@Valid @RequestBody TodoModel todo) {
         TodoModel newTodo = todoService.addTodo(todo);
         return ResponseEntity.ok(newTodo);
+    }
 
     // Scripts
     @PostMapping("/scriptCreateTodos")
