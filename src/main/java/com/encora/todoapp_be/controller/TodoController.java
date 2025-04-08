@@ -14,18 +14,13 @@ import com.encora.todoapp_be.model.TodoModel;
 import com.encora.todoapp_be.service.TodoService;
 
 @RestController
-@RequestMapping("/api/todos")
+@RequestMapping("/api")
 public class TodoController {
 
     private final TodoService todoService;
 
     public TodoController(TodoService todoService) {
         this.todoService = todoService;
-    }
-
-    @GetMapping("/getTodos")
-    public List<TodoModel> getTodos() {
-        return todoService.getAllTodos();
     }
 
     @GetMapping("/todos")
@@ -41,7 +36,7 @@ public class TodoController {
         );
     }
 
-    @PostMapping("/createTodo")
+    @PostMapping("/todos")
     public TodoModel createTodo(@RequestBody TodoModel todo) {
         return todoService.addTodo(todo);
     }
