@@ -62,6 +62,11 @@ public class TodoController {
         return todoService.markTodoAsDone(id);
     }
 
+    @PutMapping("/todos/{id}/undone")
+    public TodoModel markTodoAsUndone(@PathVariable Long id) {
+        return todoService.markTodoAsUndone(id);
+    }
+
     // Scripts
     @PostMapping("/scriptCreateTodos")
     public List<TodoModel> createTodos(@RequestBody List<TodoModel> todos) {
