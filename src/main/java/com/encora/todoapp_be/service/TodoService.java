@@ -89,7 +89,7 @@ public class TodoService {
 
     public TodoModel markTodoAsDone(Long id) {
         for (TodoModel todo : todos) {
-            if (todo.getId().equals(id)) {
+            if (todo.getId().equals(id) && !todo.isCompleted()) {
                 todo.setCompleted(true);
                 todo.setDoneDate();
                 return todo;
