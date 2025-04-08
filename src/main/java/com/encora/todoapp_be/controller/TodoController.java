@@ -57,6 +57,11 @@ public class TodoController {
         return ResponseEntity.ok(updatedTodo);
     }
 
+    @PostMapping("/todos/{id}/done")
+    public TodoModel markTodoAsDone(@PathVariable Long id) {
+        return todoService.markTodoAsDone(id);
+    }
+
     // Scripts
     @PostMapping("/scriptCreateTodos")
     public List<TodoModel> createTodos(@RequestBody List<TodoModel> todos) {

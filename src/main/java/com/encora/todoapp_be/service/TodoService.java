@@ -87,6 +87,17 @@ public class TodoService {
         return null; // or throw an exception if not found
     }
 
+    public TodoModel markTodoAsDone(Long id) {
+        for (TodoModel todo : todos) {
+            if (todo.getId().equals(id)) {
+                todo.setCompleted(true);
+                todo.setDoneDate();
+                return todo;
+            }
+        }
+        return null;
+    }
+
     // Scripts
     public List<TodoModel> addScriptTodos(List<TodoModel> todos) {
         for (TodoModel todo : todos) {
