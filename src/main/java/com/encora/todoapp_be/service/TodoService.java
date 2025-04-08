@@ -3,6 +3,8 @@ package com.encora.todoapp_be.service;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.stereotype.Service;
+
+import com.encora.todoapp_be.dto.UpdateTodoDTO;
 import com.encora.todoapp_be.model.TodoModel;
 import com.encora.utils.Priority;
 
@@ -65,6 +67,46 @@ public class TodoService {
         todo.setId((long) (todos.size() + 1));
         todos.add(todo);
         return todo;
+    }
+
+    public TodoModel updateTodo(UpdateTodoDTO updateTodo) {
+        for (int i = 0; i < todos.size(); i++) {
+            if (todos.get(i).getId().equals(updateTodo.getId())) {
+                if(updateTodo.getText() != null) {
+                    todos.get(i).setText(updateTodo.getText());
+                }
+                if(updateTodo.getDueDate() != null) {
+                    todos.get(i).setDueDate(updateTodo.getDueDate());
+                }
+                if(updateTodo.getPriority() != null) {
+                    todos.get(i).setPriority(updateTodo.getPriority());
+                }
+                return todos.get(i);
+            }
+        }
+        return null; // or throw an exception if not found
+    }
+
+    public TodoModel markTodoAsDone(Long id) {
+        for (TodoModel todo : todos) {
+            if (todo.getId().equals(id) && todo.isCompleted() == false) {
+                todo.setCompleted(true);
+                todo.setDoneDate();
+                return todo;
+            }
+        }
+        return null;
+    }
+
+    public TodoModel markTodoAsUndone(Long id) {
+        for (TodoModel todo : todos) {
+            if (todo.getId().equals(id) && todo.isCompleted() == true) {
+                todo.setCompleted(false);
+                todo.setDoneDate();
+                return todo;
+            }
+        }
+        return null;
     }
 
     // Scripts
