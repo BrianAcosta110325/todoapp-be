@@ -13,6 +13,15 @@ public class TodoService {
         return todos;
     }
 
+    // Scripts
+    public List<TodoModel> addScriptTodos(List<TodoModel> todos) {
+        for (TodoModel todo : todos) {
+            todo.setId((long) (this.todos.size() + 1));
+            this.todos.add(todo);
+        }
+        return todos;
+    }
+
     public TodoModel addTodo(TodoModel todo) {
         todo.setId((long) (todos.size() + 1));
         todos.add(todo);

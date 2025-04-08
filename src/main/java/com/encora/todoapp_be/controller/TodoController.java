@@ -30,4 +30,10 @@ public class TodoController {
     public TodoModel createTodo(@RequestBody TodoModel todo) {
         return todoService.addTodo(todo);
     }
+
+    // Scripts
+    @PostMapping("/scriptCreateTodos")
+    public List<TodoModel> createTodos(@RequestBody List<TodoModel> todos) {
+        return todoService.addScriptTodos(todos);
+    }
 }
