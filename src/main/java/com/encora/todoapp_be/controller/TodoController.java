@@ -2,6 +2,9 @@ package com.encora.todoapp_be.controller;
 
 import java.util.List;
 
+import jakarta.validation.Valid;
+
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -34,11 +37,11 @@ public class TodoController {
             filters.getPriority()
         );
     }
-
+  
     @PostMapping("/todos")
-    public TodoModel createTodo(@RequestBody TodoModel todo) {
-        return todoService.addTodo(todo);
-    }
+    public ResponseEntity<TodoModel> addTodo(@Valid @RequestBody TodoModel todo) {
+        TodoModel newTodo = todoService.addTodo(todo);
+        return ResponseEntity.ok(newTodo);
 
     // Scripts
     @PostMapping("/scriptCreateTodos")
