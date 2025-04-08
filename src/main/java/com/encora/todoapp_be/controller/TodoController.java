@@ -11,11 +11,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.encora.todoapp_be.dto.TodoFilterDTO;
 import com.encora.todoapp_be.model.TodoModel;
 import com.encora.todoapp_be.service.TodoService;
 
 @RestController
-@RequestMapping("/api/todos")
+@RequestMapping("/api")
 public class TodoController {
 
     private final TodoService todoService;
@@ -24,14 +25,27 @@ public class TodoController {
         this.todoService = todoService;
     }
 
-    @GetMapping("/getTodos")
-    public List<TodoModel> getTodos() {
-        return todoService.getAllTodos();
+    @GetMapping("/todos")
+    public List<TodoModel> getFilteredTodos(@RequestBody TodoFilterDTO filters) {
+        return todoService.getTodosWithPagination(
+            filters.getPage(),
+            filters.getSize(),
+            filters.getDueDateSort(),
+            filters.isPrioritySort(),
+            filters.getText(),
+            filters.getCompleted(),
+            filters.getPriority()
+        );
     }
-
-    @PostMapping("/addTodo")
+  
+    @PostMapping("/todos")
     public ResponseEntity<TodoModel> addTodo(@Valid @RequestBody TodoModel todo) {
         TodoModel newTodo = todoService.addTodo(todo);
         return ResponseEntity.ok(newTodo);
+
+    // Scripts
+    @PostMapping("/scriptCreateTodos")
+    public List<TodoModel> createTodos(@RequestBody List<TodoModel> todos) {
+        return todoService.addScriptTodos(todos);
     }
 }
