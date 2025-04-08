@@ -14,9 +14,11 @@ public class TodoService {
     }
 
     public List<TodoModel> getTodosWithPagination(int page, int size) {
+        // Sort by due date
+        todos.sort((t1, t2) -> t1.getDueDate().compareTo(t2.getDueDate()));
+        // Pagination logic
         int fromIndex = Math.min(page * size, todos.size());
         int toIndex = Math.min(fromIndex + size, todos.size());
-        
         return todos.subList(fromIndex, toIndex);
     }
 
