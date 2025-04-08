@@ -28,22 +28,37 @@ public class TodoService {
     }
 
     public List<TodoModel> getTodosWithPagination(int page, int size, Boolean dueDateSort, Boolean prioritySort, String text, Boolean completed, String priority) {
+        // Filter todos based on the provided criteria
+        List<TodoModel> filteredTodos = new ArrayList<>();
+        for (TodoModel todo : todos) {
+            if (text != null && !text.isEmpty() && !todo.getText().toLowerCase().contains(text.toLowerCase())) {
+                continue;
+            }
+            if (completed != null && todo.isCompleted() != completed) {
+                continue;
+            }
+            if (priority != null && !priority.isEmpty() && !todo.getPriority().toString().equalsIgnoreCase(priority)) {
+                continue;
+            }
+            filteredTodos.add(todo);
+        }
+        
         if(dueDateSort) {
             // Sort by due date
-            todos.sort((t1, t2) -> t1.getDueDate().compareTo(t2.getDueDate()));
+            filteredTodos.sort((t1, t2) -> t1.getDueDate().compareTo(t2.getDueDate()));
         } 
         if(prioritySort) {
             // Sort by priority
-            todos.sort((t1, t2) -> {
+            filteredTodos.sort((t1, t2) -> {
                 int priority1 = getPriorityValue(t1.getPriority());
                 int priority2 = getPriorityValue(t2.getPriority());
                 return Integer.compare(priority1, priority2);
             });
         }
         // Pagination logic
-        int fromIndex = Math.min(page * size, todos.size());
-        int toIndex = Math.min(fromIndex + size, todos.size());
-        return todos.subList(fromIndex, toIndex);
+        int fromIndex = Math.min(page * size, filteredTodos.size());
+        int toIndex = Math.min(fromIndex + size, filteredTodos.size());
+        return filteredTodos.subList(fromIndex, toIndex);
     }
 
     public TodoModel addTodo(TodoModel todo) {
