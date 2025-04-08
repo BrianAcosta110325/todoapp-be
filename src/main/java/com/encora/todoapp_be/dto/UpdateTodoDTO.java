@@ -7,6 +7,7 @@ import com.encora.utils.Priority;
 import jakarta.validation.constraints.Size;
 
 public class UpdateTodoDTO {
+    private Long id;
 
     @Size(max = 120, message = "Text cannot exceed 120 characters")
     private String text;
@@ -16,6 +17,12 @@ public class UpdateTodoDTO {
     private Priority priority;
 
     // Getters y Setters
+    public Long getId() {
+        return id;
+    }
+    public void setId(Long id) {
+        this.id = id;
+    }
     public String getText() {
         return text;
     }
