@@ -30,9 +30,10 @@ public class TodoController {
     @GetMapping("/getWithPagination")
     public List<TodoModel> getTodosWithPagination(
         @RequestParam(defaultValue = "0") int page,
-        @RequestParam(defaultValue = "10") int size) {
-        // Link structure: /getWithPagination?page=1&size=5
-        return todoService.getTodosWithPagination(page, size);
+        @RequestParam(defaultValue = "10") int size,
+        @RequestParam(defaultValue = "false") boolean sort) {
+        // Example: /getWithPagination?page=1&size=5&sort=true
+        return todoService.getTodosWithPagination(page, size, sort);
     }
 
     @PostMapping("/createTodo")

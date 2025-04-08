@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.springframework.stereotype.Service;
 import com.encora.todoapp_be.model.TodoModel;
+import com.encora.utils.Priority;
 
 @Service
 public class TodoService {
@@ -13,9 +14,31 @@ public class TodoService {
         return todos;
     }
 
-    public List<TodoModel> getTodosWithPagination(int page, int size) {
-        // Sort by due date
-        todos.sort((t1, t2) -> t1.getDueDate().compareTo(t2.getDueDate()));
+    private int getPriorityValue(Priority priority) {
+        switch (priority) {
+            case High:
+                return 1;
+            case Medium:
+                return 2;
+            case Low:
+                return 3;
+            default:
+                throw new IllegalArgumentException("Invalid priority: " + priority);
+        }
+    }
+
+    public List<TodoModel> getTodosWithPagination(int page, int size, boolean sort) {
+        if(sort) {
+            // Sort by due date
+            todos.sort((t1, t2) -> t1.getDueDate().compareTo(t2.getDueDate()));
+        } else {
+            // Sort by priority
+            todos.sort((t1, t2) -> {
+                int priority1 = getPriorityValue(t1.getPriority());
+                int priority2 = getPriorityValue(t2.getPriority());
+                return Integer.compare(priority1, priority2);
+            });
+        }
         // Pagination logic
         int fromIndex = Math.min(page * size, todos.size());
         int toIndex = Math.min(fromIndex + size, todos.size());
