@@ -26,12 +26,12 @@ public class TodoModel {
     @NotNull(message = "Priority cannot be null")
     private Priority priority;
 
-    public TodoModel(String text, LocalDateTime dueDate, LocalDateTime doneDate, boolean completed, Priority priority) {
+    public TodoModel(String text, LocalDateTime dueDate, LocalDateTime doneDate, Priority priority) {
         this.createdAt = Instant.now();
         this.text = text;
         this.dueDate = dueDate;
         this.doneDate = doneDate;
-        this.completed = completed;
+        this.completed = false;
         this.priority = priority;
     }
 
