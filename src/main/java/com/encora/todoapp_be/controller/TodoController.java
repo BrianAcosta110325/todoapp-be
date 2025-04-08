@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.encora.todoapp_be.dto.TodoFilterDTO;
 import com.encora.todoapp_be.model.TodoModel;
 import com.encora.todoapp_be.service.TodoService;
 
@@ -27,13 +28,17 @@ public class TodoController {
         return todoService.getAllTodos();
     }
 
-    @GetMapping("/getWithPagination")
-    public List<TodoModel> getTodosWithPagination(
-        @RequestParam(defaultValue = "0") int page,
-        @RequestParam(defaultValue = "10") int size,
-        @RequestParam(defaultValue = "false") boolean sort) {
-        // Example: /getWithPagination?page=1&size=5&sort=true
-        return todoService.getTodosWithPagination(page, size, sort);
+    @GetMapping("/todos")
+    public List<TodoModel> getFilteredTodos(@RequestBody TodoFilterDTO filters) {
+        return todoService.getTodosWithPagination(
+            filters.getPage(),
+            filters.getSize(),
+            filters.getDueDateSort(),
+            filters.isPrioritySort(),
+            filters.getText(),
+            filters.getCompleted(),
+            filters.getPriority()
+        );
     }
 
     @PostMapping("/createTodo")

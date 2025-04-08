@@ -27,11 +27,12 @@ public class TodoService {
         }
     }
 
-    public List<TodoModel> getTodosWithPagination(int page, int size, boolean sort) {
-        if(sort) {
+    public List<TodoModel> getTodosWithPagination(int page, int size, Boolean dueDateSort, Boolean prioritySort, String text, Boolean completed, String priority) {
+        if(dueDateSort) {
             // Sort by due date
             todos.sort((t1, t2) -> t1.getDueDate().compareTo(t2.getDueDate()));
-        } else {
+        } 
+        if(prioritySort) {
             // Sort by priority
             todos.sort((t1, t2) -> {
                 int priority1 = getPriorityValue(t1.getPriority());
