@@ -1,5 +1,6 @@
 package com.encora.todoapp_be.controller;
 
+import java.util.Collections;
 import java.util.List;
 
 import jakarta.validation.Valid;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.encora.todoapp_be.dto.TodoFilterDTO;
@@ -31,15 +33,27 @@ public class TodoController {
     }
 
     @GetMapping("/todos")
-    public List<TodoModel> getFilteredTodos(@RequestBody TodoFilterDTO filters) {
+    public List<TodoModel> getFilteredTodos(
+            @RequestParam(required = false, defaultValue = "0") Integer page,
+            @RequestParam(required = false, defaultValue = "10") Integer size,
+            @RequestParam(required = false, defaultValue = "false") Boolean dueDateSort,
+            @RequestParam(required = false, defaultValue = "false") Boolean prioritySort,
+            @RequestParam(required = false) String text,
+            @RequestParam(required = false) Boolean completed,
+            @RequestParam(required = false) List<String> priority
+        ) {
+        if (priority == null || (priority.size() == 1 && priority.get(0).isEmpty())) {
+            priority = Collections.emptyList();
+        }
+
         return todoService.getTodosWithPagination(
-            filters.getPage(),
-            filters.getSize(),
-            filters.getDueDateSort(),
-            filters.isPrioritySort(),
-            filters.getText(),
-            filters.getCompleted(),
-            filters.getPriority()
+            page,
+            size,
+            dueDateSort,
+            prioritySort,
+            text,
+            completed,
+            priority
         );
     }
   

@@ -29,7 +29,15 @@ public class TodoService {
         }
     }
 
-    public List<TodoModel> getTodosWithPagination(int page, int size, Boolean dueDateSort, Boolean prioritySort, String text, Boolean completed, String priority) {
+    public List<TodoModel> getTodosWithPagination(
+        Integer page, 
+        Integer size, 
+        Boolean dueDateSort, 
+        Boolean prioritySort, 
+        String text, 
+        Boolean completed, 
+        List<String> priority) {
+
         // Filter todos based on the provided criteria
         List<TodoModel> filteredTodos = new ArrayList<>();
         for (TodoModel todo : todos) {
@@ -37,9 +45,6 @@ public class TodoService {
                 continue;
             }
             if (completed != null && todo.isCompleted() != completed) {
-                continue;
-            }
-            if (priority != null && !priority.isEmpty() && !todo.getPriority().toString().equalsIgnoreCase(priority)) {
                 continue;
             }
             filteredTodos.add(todo);
