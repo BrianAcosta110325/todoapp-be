@@ -47,6 +47,9 @@ public class TodoService {
       if (completed != null && todo.isCompleted() != completed) {
           continue;
       }
+      if (priority != null && !priority.isEmpty() && !priority.contains(todo.getPriority().toString())) {
+          continue;
+      }
       filteredTodos.add(todo);
     }
     

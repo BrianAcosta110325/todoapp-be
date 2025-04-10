@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.encora.todoapp_be.dto.TodoFilterDTO;
 import com.encora.todoapp_be.dto.UpdateTodoDTO;
 import com.encora.todoapp_be.model.TodoModel;
 import com.encora.todoapp_be.service.TodoService;
