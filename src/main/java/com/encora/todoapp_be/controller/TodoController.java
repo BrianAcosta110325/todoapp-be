@@ -40,11 +40,8 @@ public class TodoController {
             @RequestParam(required = false, defaultValue = "false") Boolean prioritySort,
             @RequestParam(required = false) String text,
             @RequestParam(required = false) Boolean completed,
-            @RequestParam(required = false) List<String> priority
+            @RequestParam(required = false, name = "priorities") String priority
         ) {
-        if (priority == null || (priority.size() == 1 && priority.get(0).isEmpty())) {
-            priority = Collections.emptyList();
-        }
 
         return todoService.getTodosWithPagination(
             page,
@@ -53,7 +50,7 @@ public class TodoController {
             prioritySort,
             text,
             completed,
-            priority
+            priority != null ? List.of(priority.split(",")) : Collections.emptyList()
         );
     }
   
