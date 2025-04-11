@@ -1,6 +1,6 @@
 package com.encora.todoapp_be.dto;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 import com.encora.utils.Priority;
 
@@ -12,7 +12,7 @@ public class UpdateTodoDTO {
     @Size(max = 120, message = "Text cannot exceed 120 characters")
     private String text;
 
-    private LocalDateTime dueDate;
+    private LocalDate dueDate;
 
     private Priority priority;
 
@@ -29,10 +29,10 @@ public class UpdateTodoDTO {
     public void setText(String text) {
         this.text = text;
     }
-    public LocalDateTime getDueDate() {
+    public LocalDate getDueDate() {
         return dueDate;
     }
-    public void setDueDate(LocalDateTime dueDate) {
+    public void setDueDate(LocalDate dueDate) {
         this.dueDate = dueDate;
     }
     public Priority getPriority() {
