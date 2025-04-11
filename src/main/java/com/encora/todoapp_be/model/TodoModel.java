@@ -1,7 +1,7 @@
 package com.encora.todoapp_be.model;
 
 import java.time.Instant;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -16,7 +16,7 @@ public class TodoModel {
     @Size(max = 120, message = "Text cannot exceed 120 characters")
     private String text;
 
-    private LocalDateTime dueDate;
+    private LocalDate dueDate;
 
     private Instant doneDate;
 
@@ -25,7 +25,7 @@ public class TodoModel {
     @NotNull(message = "Priority cannot be null")
     private Priority priority;
 
-    public TodoModel(String text, LocalDateTime dueDate, Priority priority) {
+    public TodoModel(String text, LocalDate dueDate, Priority priority) {
         this.createdAt = Instant.now();
         this.text = text;
         this.dueDate = dueDate;
@@ -68,10 +68,10 @@ public class TodoModel {
         this.text = text;
     }
 
-    public LocalDateTime getDueDate() {
+    public LocalDate getDueDate() {
         return this.dueDate;
     }
-    public void setDueDate(LocalDateTime dueDate) {
+    public void setDueDate(LocalDate dueDate) {
         this.dueDate = dueDate;
     }
 
