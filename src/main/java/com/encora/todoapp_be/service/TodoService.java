@@ -112,6 +112,17 @@ public class TodoService {
     return null;
   }
 
+  public void deleteTodo(Long id) {
+    for (int i = 0; i < todos.size(); i++) {
+      if (todos.get(i).getId().equals(id)) {
+        todos.remove(i);
+        return;
+      }
+    }
+    // Optionally, throw an exception if the todo is not found
+    throw new RuntimeException("Todo not found with id: " + id);
+  }
+
   // Scripts
   public List<TodoModel> addScriptTodos(List<TodoModel> todos) {
     for (TodoModel todo : todos) {
