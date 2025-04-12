@@ -42,7 +42,7 @@ public class TodoController {
             @RequestParam(required = false) Boolean completed,
             @RequestParam(required = false, name = "priorities") String priority
         ) {
-
+        // Use example: http://localhost:8080/api/todos?page=0&size=10&dueDateSort=true&prioritySort=true&text=example&completed=true&priorities=High,Medium
         return todoService.getTodosWithPagination(
             page,
             size,

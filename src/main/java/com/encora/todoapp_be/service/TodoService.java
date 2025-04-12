@@ -9,28 +9,11 @@ import org.springframework.stereotype.Service;
 
 import com.encora.todoapp_be.dto.UpdateTodoDTO;
 import com.encora.todoapp_be.model.TodoModel;
-import com.encora.utils.Priority;
+import com.encora.utils.PaginationUtils;
 
 @Service
 public class TodoService {
   private final List<TodoModel> todos = new ArrayList<>();
-
-  public List<TodoModel> getAllTodos() {
-    return todos;
-  }
-
-  private int getPriorityValue(Priority priority) {
-    switch (priority) {
-      case High:
-          return 1;
-      case Medium:
-          return 2;
-      case Low:
-          return 3;
-      default:
-          throw new IllegalArgumentException("Invalid priority: " + priority);
-    }
-  }
 
   public Map<String, Object> getTodosWithPagination(
     Integer page, 
@@ -63,18 +46,22 @@ public class TodoService {
     if(prioritySort) {
       // Sort by priority
       filteredTodos.sort((t1, t2) -> {
-          int priority1 = getPriorityValue(t1.getPriority());
-          int priority2 = getPriorityValue(t2.getPriority());
+          int priority1 = PaginationUtils.getPriorityValue(t1.getPriority());
+          int priority2 = PaginationUtils.getPriorityValue(t2.getPriority());
           return Integer.compare(priority1, priority2);
       });
     }
+
     // Pagination logic
     int fromIndex = Math.min(page * size, filteredTodos.size());
     int toIndex = Math.min(fromIndex + size, filteredTodos.size());
 
+    Map<String, String> metrics = PaginationUtils.getMetricsValue(filteredTodos);
+
     Map<String, Object> response = new HashMap<>();
     response.put("data", filteredTodos.subList(fromIndex, toIndex));
     response.put("totalPages", (int) Math.ceil((double) (filteredTodos.size()) / size));
+    response.putAll(metrics);
 
     return response;
   }
