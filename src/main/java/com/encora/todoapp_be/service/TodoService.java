@@ -1,7 +1,10 @@
 package com.encora.todoapp_be.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import org.springframework.stereotype.Service;
 
 import com.encora.todoapp_be.dto.UpdateTodoDTO;
@@ -29,7 +32,7 @@ public class TodoService {
     }
   }
 
-  public List<TodoModel> getTodosWithPagination(
+  public Map<String, Object> getTodosWithPagination(
     Integer page, 
     Integer size, 
     Boolean dueDateSort, 
@@ -68,7 +71,12 @@ public class TodoService {
     // Pagination logic
     int fromIndex = Math.min(page * size, filteredTodos.size());
     int toIndex = Math.min(fromIndex + size, filteredTodos.size());
-    return filteredTodos.subList(fromIndex, toIndex);
+
+    Map<String, Object> response = new HashMap<>();
+    response.put("data", filteredTodos.subList(fromIndex, toIndex));
+    response.put("totalPages", (int) Math.floor((double) (filteredTodos.size()) / size));
+
+    return response;
   }
 
   public TodoModel addTodo(TodoModel todo) {
