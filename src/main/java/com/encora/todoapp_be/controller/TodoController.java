@@ -2,6 +2,7 @@ package com.encora.todoapp_be.controller;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import jakarta.validation.Valid;
 
@@ -32,7 +33,7 @@ public class TodoController {
     }
 
     @GetMapping("/todos")
-    public List<TodoModel> getFilteredTodos(
+    public Map<String, Object> getFilteredTodos(
             @RequestParam(required = false, defaultValue = "0") Integer page,
             @RequestParam(required = false, defaultValue = "10") Integer size,
             @RequestParam(required = false, defaultValue = "false") Boolean dueDateSort,
