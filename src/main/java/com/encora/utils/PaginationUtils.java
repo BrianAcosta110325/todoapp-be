@@ -83,8 +83,6 @@ public class PaginationUtils {
     String humanReadableMediumTime = getHumanReadableTime(averageMediumTodosTimeDifference);
     String humanReadableHighTime = getHumanReadableTime(averageHighTodosTimeDifference);
     String humanReadableTime = getHumanReadableTime(averageTimeDifference);
-  
-    System.out.println("Low Todos Time Differences: " + humanReadableTime);
 
     return Map.of(
         "averageTimeDifference", humanReadableTime,

@@ -56,7 +56,7 @@ public class TodoService {
     int fromIndex = Math.min(page * size, filteredTodos.size());
     int toIndex = Math.min(fromIndex + size, filteredTodos.size());
 
-    Map<String, String> metrics = PaginationUtils.getMetricsValue(filteredTodos);
+    Map<String, String> metrics = PaginationUtils.getMetricsValue(todos);
 
     Map<String, Object> response = new HashMap<>();
     response.put("data", filteredTodos.subList(fromIndex, toIndex));
