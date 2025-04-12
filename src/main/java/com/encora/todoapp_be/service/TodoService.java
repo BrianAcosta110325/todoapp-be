@@ -74,7 +74,7 @@ public class TodoService {
 
     Map<String, Object> response = new HashMap<>();
     response.put("data", filteredTodos.subList(fromIndex, toIndex));
-    response.put("totalPages", (int) Math.floor((double) (filteredTodos.size()) / size));
+    response.put("totalPages", (int) Math.ceil((double) (filteredTodos.size()) / size));
 
     return response;
   }
