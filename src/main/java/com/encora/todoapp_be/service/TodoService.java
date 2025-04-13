@@ -42,10 +42,20 @@ public class TodoService {
     }
     
     if(dueDateSort != null && !dueDateSort.equals("")) {
-      if(dueDateSort.equals("asc")) {
-        filteredTodos.sort((t1, t2) -> t1.getDueDate().compareTo(t2.getDueDate()));
-      } else if(dueDateSort.equals("desc")) {
-        filteredTodos.sort((t1, t2) -> t2.getDueDate().compareTo(t1.getDueDate()));
+      if (dueDateSort.equals("asc")) {
+        filteredTodos.sort((t1, t2) -> {
+          if (t1.getDueDate() == null && t2.getDueDate() == null) return 0;
+          if (t1.getDueDate() == null) return 1;
+          if (t2.getDueDate() == null) return -1;
+          return t1.getDueDate().compareTo(t2.getDueDate());
+        });
+      } else if (dueDateSort.equals("desc")) {
+        filteredTodos.sort((t1, t2) -> {
+          if (t1.getDueDate() == null && t2.getDueDate() == null) return 0;
+          if (t1.getDueDate() == null) return 1;
+          if (t2.getDueDate() == null) return -1;
+          return t2.getDueDate().compareTo(t1.getDueDate());
+        });
       }
     } 
     if(prioritySort != null && !prioritySort.equals("")) {
