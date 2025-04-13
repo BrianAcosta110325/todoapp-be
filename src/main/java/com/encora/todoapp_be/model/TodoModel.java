@@ -25,6 +25,8 @@ public class TodoModel {
     @NotNull(message = "Priority cannot be null")
     private Priority priority;
 
+    private Integer dueDateProximity;
+
     public TodoModel(String text, LocalDate dueDate, Priority priority) {
         this.createdAt = Instant.now();
         this.text = text;
@@ -94,5 +96,11 @@ public class TodoModel {
     }
     public void setPriority(Priority priority) {
         this.priority = priority;
+    }
+    public Integer getDueDateProximity() {
+        return this.dueDateProximity;
+    }
+    public void setDueDateProximity(Integer dueDateProximity) {
+        this.dueDateProximity = dueDateProximity;
     }
 }

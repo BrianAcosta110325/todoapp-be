@@ -6,19 +6,6 @@ import java.util.Map;
 import com.encora.todoapp_be.model.TodoModel;
 
 public class PaginationUtils {
-  public static int getPriorityValue(Priority priority) {
-    switch (priority) {
-      case High:
-          return 1;
-      case Medium:
-          return 2;
-      case Low:
-          return 3;
-      default:
-          throw new IllegalArgumentException("Invalid priority: " + priority);
-    }
-  }
-
   public static Map<String, String> getMetricsValue(List<TodoModel> todos) {
     // Filter completed todos
     List<TodoModel> completedTodos = todos.stream()

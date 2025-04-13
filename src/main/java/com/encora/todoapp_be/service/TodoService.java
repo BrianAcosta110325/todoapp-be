@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.encora.todoapp_be.dto.UpdateTodoDTO;
 import com.encora.todoapp_be.model.TodoModel;
+import com.encora.utils.DeclarationUtils;
 import com.encora.utils.PaginationUtils;
 
 @Service
@@ -36,21 +37,32 @@ public class TodoService {
       if (priority != null && !priority.isEmpty() && !priority.contains(todo.getPriority().toString())) {
           continue;
       }
+      todo.setDueDateProximity(DeclarationUtils.getDueDateProximity(todo.getDueDate()));
       filteredTodos.add(todo);
     }
     
     if(dueDateSort != null && !dueDateSort.equals("")) {
-      if(dueDateSort.equals("asc")) {
-        filteredTodos.sort((t1, t2) -> t1.getDueDate().compareTo(t2.getDueDate()));
-      } else if(dueDateSort.equals("desc")) {
-        filteredTodos.sort((t1, t2) -> t2.getDueDate().compareTo(t1.getDueDate()));
+      if (dueDateSort.equals("asc")) {
+        filteredTodos.sort((t1, t2) -> {
+          if (t1.getDueDate() == null && t2.getDueDate() == null) return 0;
+          if (t1.getDueDate() == null) return 1;
+          if (t2.getDueDate() == null) return -1;
+          return t1.getDueDate().compareTo(t2.getDueDate());
+        });
+      } else if (dueDateSort.equals("desc")) {
+        filteredTodos.sort((t1, t2) -> {
+          if (t1.getDueDate() == null && t2.getDueDate() == null) return 0;
+          if (t1.getDueDate() == null) return 1;
+          if (t2.getDueDate() == null) return -1;
+          return t2.getDueDate().compareTo(t1.getDueDate());
+        });
       }
     } 
     if(prioritySort != null && !prioritySort.equals("")) {
       if(prioritySort.equals("asc")) {
-        filteredTodos.sort((t1, t2) -> PaginationUtils.getPriorityValue(t1.getPriority()) - PaginationUtils.getPriorityValue(t2.getPriority()));
+        filteredTodos.sort((t1, t2) -> DeclarationUtils.getPriorityValue(t1.getPriority()) - DeclarationUtils.getPriorityValue(t2.getPriority()));
       } else if(prioritySort.equals("desc")) {
-        filteredTodos.sort((t1, t2) -> PaginationUtils.getPriorityValue(t2.getPriority()) - PaginationUtils.getPriorityValue(t1.getPriority()));
+        filteredTodos.sort((t1, t2) -> DeclarationUtils.getPriorityValue(t2.getPriority()) - DeclarationUtils.getPriorityValue(t1.getPriority()));
       }
     }
 
