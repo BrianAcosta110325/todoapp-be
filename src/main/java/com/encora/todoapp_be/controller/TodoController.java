@@ -37,8 +37,8 @@ public class TodoController {
     public Map<String, Object> getFilteredTodos(
             @RequestParam(required = false, defaultValue = "0") Integer page,
             @RequestParam(required = false, defaultValue = "10") Integer size,
-            @RequestParam(required = false, defaultValue = "false") Boolean dueDateSort,
-            @RequestParam(required = false, defaultValue = "false") Boolean prioritySort,
+            @RequestParam(required = false, defaultValue = "") String dueDateSort,
+            @RequestParam(required = false, defaultValue = "") String prioritySort,
             @RequestParam(required = false) String text,
             @RequestParam(required = false) Boolean completed,
             @RequestParam(required = false, name = "priorities") String priority

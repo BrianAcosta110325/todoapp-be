@@ -18,8 +18,8 @@ public class TodoService {
   public Map<String, Object> getTodosWithPagination(
     Integer page, 
     Integer size, 
-    Boolean dueDateSort, 
-    Boolean prioritySort, 
+    String dueDateSort, 
+    String prioritySort, 
     String text, 
     Boolean completed, 
     List<String> priority) {
@@ -39,17 +39,19 @@ public class TodoService {
       filteredTodos.add(todo);
     }
     
-    if(dueDateSort) {
-      // Sort by due date
-      filteredTodos.sort((t1, t2) -> t1.getDueDate().compareTo(t2.getDueDate()));
+    if(dueDateSort != null && !dueDateSort.equals("")) {
+      if(dueDateSort.equals("asc")) {
+        filteredTodos.sort((t1, t2) -> t1.getDueDate().compareTo(t2.getDueDate()));
+      } else if(dueDateSort.equals("desc")) {
+        filteredTodos.sort((t1, t2) -> t2.getDueDate().compareTo(t1.getDueDate()));
+      }
     } 
-    if(prioritySort) {
-      // Sort by priority
-      filteredTodos.sort((t1, t2) -> {
-          int priority1 = PaginationUtils.getPriorityValue(t1.getPriority());
-          int priority2 = PaginationUtils.getPriorityValue(t2.getPriority());
-          return Integer.compare(priority1, priority2);
-      });
+    if(prioritySort != null && !prioritySort.equals("")) {
+      if(prioritySort.equals("asc")) {
+        filteredTodos.sort((t1, t2) -> PaginationUtils.getPriorityValue(t1.getPriority()) - PaginationUtils.getPriorityValue(t2.getPriority()));
+      } else if(prioritySort.equals("desc")) {
+        filteredTodos.sort((t1, t2) -> PaginationUtils.getPriorityValue(t2.getPriority()) - PaginationUtils.getPriorityValue(t1.getPriority()));
+      }
     }
 
     // Pagination logic

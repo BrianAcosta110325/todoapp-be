@@ -3,8 +3,8 @@ package com.encora.todoapp_be.dto;
 public class TodoFilterDTO {
     private int page = 0;
     private int size = 10;
-    private Boolean dueDateSort = false;
-    private Boolean prioritySort = false;
+    private String dueDateSort = "";
+    private String prioritySort = "";
     private String text = "";
     private Boolean completed;
     private String priority;
@@ -12,7 +12,7 @@ public class TodoFilterDTO {
     // Constructor
     public TodoFilterDTO() {
     }
-    public TodoFilterDTO(int page, int size, Boolean dueDateSort, Boolean prioritySort, String text, Boolean completed, String priority) {
+    public TodoFilterDTO(int page, int size, String dueDateSort, String prioritySort, String text, Boolean completed, String priority) {
         this.page = page;
         this.size = size;
         this.dueDateSort = dueDateSort;
@@ -35,16 +35,16 @@ public class TodoFilterDTO {
     public void setSize(int size) {
         this.size = size;
     }
-    public Boolean getDueDateSort() {
+    public String getDueDateSort() {
         return dueDateSort;
     }
-    public void setDueDateSort(Boolean dueDateSort) {
+    public void setDueDateSort(String dueDateSort) {
         this.dueDateSort = dueDateSort;
     }
-    public Boolean isPrioritySort() {
+    public String isPrioritySort() {
         return prioritySort;
     }
-    public void setPrioritySort(boolean prioritySort) {
+    public void setPrioritySort(String prioritySort) {
         this.prioritySort = prioritySort;
     }
     public String getText() {
