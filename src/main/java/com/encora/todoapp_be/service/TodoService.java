@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicLong;
 
 import org.springframework.stereotype.Service;
 
@@ -15,6 +16,7 @@ import com.encora.utils.PaginationUtils;
 @Service
 public class TodoService {
   private final List<TodoModel> todos = new ArrayList<>();
+  private final AtomicLong idGenerator = new AtomicLong(1);
 
   public Map<String, Object> getTodosWithPagination(
     Integer page, 
@@ -81,7 +83,7 @@ public class TodoService {
   }
 
   public TodoModel addTodo(TodoModel todo) {
-    todo.setId((long) (todos.size() + 1));
+    todo.setId(idGenerator.getAndIncrement());
     todos.add(todo);
     return todo;
   }
