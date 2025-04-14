@@ -26,6 +26,7 @@ public class TodoService {
       String text, 
       Boolean completed, 
       List<String> priority) {
+
         List<TodoModel> todos = todoRepository.findAll();
         List<TodoModel> filteredTodos = new ArrayList<>();
 
@@ -39,7 +40,7 @@ public class TodoService {
 
         if (dueDateSort != null && !dueDateSort.isEmpty()) {
             filteredTodos.sort(Comparator.comparing(TodoModel::getDueDate, Comparator.nullsLast(Comparator.naturalOrder())));
-            if (dueDateSort.equals("desc")) Collections.reverse(filteredTodos);
+            if (dueDateSort.equals("asc")) Collections.reverse(filteredTodos);
         }
 
         if (prioritySort != null && !prioritySort.isEmpty()) {
@@ -47,10 +48,14 @@ public class TodoService {
             if (prioritySort.equals("desc")) Collections.reverse(filteredTodos);
         }
 
+        // Pagination
         int fromIndex = Math.min(page * size, filteredTodos.size());
         int toIndex = Math.min(fromIndex + size, filteredTodos.size());
+
+        // Metrics
         Map<String, String> metrics = PaginationUtils.getMetricsValue(todos);
 
+        // Response as Map
         Map<String, Object> response = new HashMap<>();
         response.put("data", filteredTodos.subList(fromIndex, toIndex));
         response.put("totalPages", (int) Math.ceil((double) (filteredTodos.size()) / size));
@@ -105,6 +110,7 @@ public class TodoService {
         todoRepository.deleteById(id);
     }
 
+    // Scripts
     public List<TodoModel> addScriptTodos(List<TodoModel> todos) {
         return todoRepository.saveAll(todos);
     }
