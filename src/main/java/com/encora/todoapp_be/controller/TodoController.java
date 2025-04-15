@@ -26,8 +26,8 @@ import com.encora.todoapp_be.service.TodoService;
 @RequestMapping("/api")
 @CrossOrigin(origins = "http://localhost:8080")
 public class TodoController {
-
-    private final TodoService todoService;
+    
+    private final TodoService todoService; 
 
     public TodoController(TodoService todoService) {
         this.todoService = todoService;
