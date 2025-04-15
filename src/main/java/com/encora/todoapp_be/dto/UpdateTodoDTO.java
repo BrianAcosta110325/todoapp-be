@@ -15,6 +15,9 @@ public class UpdateTodoDTO {
     @NotBlank(message = "Text cannot be blank")
     @Size(max = 120, message = "Text cannot exceed 120 characters")
     private String text;
+    
+    public UpdateTodoDTO() {
+    }
 
     private LocalDate dueDate;
 

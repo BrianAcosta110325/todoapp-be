@@ -27,6 +27,11 @@ public class TodoModel {
 
     private Integer dueDateProximity;
 
+    public TodoModel() {
+        this.createdAt = Instant.now();
+        this.completed = false;
+    }
+
     public TodoModel(String text, LocalDate dueDate, Priority priority) {
         this.createdAt = Instant.now();
         this.text = text;
