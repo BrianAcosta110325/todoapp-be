@@ -31,9 +31,19 @@ public class TodoService {
         List<TodoModel> filteredTodos = new ArrayList<>();
 
         for (TodoModel todo : todos) {
-            if (text != null && !text.isEmpty() && !todo.getText().toLowerCase().contains(text.toLowerCase())) continue;
-            if (completed != null && todo.isCompleted() != completed) continue;
-            if (priority != null && !priority.isEmpty() && !priority.contains(todo.getPriority().toString())) continue;
+            if (text != null && 
+                !text.isEmpty() && 
+                !todo.getText().toLowerCase().contains(text.toLowerCase())) {
+                continue;
+            }
+            if (completed != null && todo.isCompleted() != completed) {
+                continue;
+            }
+            if (priority != null && 
+                !priority.isEmpty() && 
+                !priority.contains(todo.getPriority().toString())) {
+                continue;
+            }
             todo.setDueDateProximity(DeclarationUtils.getDueDateProximity(todo.getDueDate()));
             filteredTodos.add(todo);
         }
