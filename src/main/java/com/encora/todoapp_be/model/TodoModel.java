@@ -107,4 +107,14 @@ public class TodoModel {
     public void setDueDateProximity(Integer dueDateProximity) {
         this.dueDateProximity = dueDateProximity;
     }
+
+    // Clone
+    public TodoModel clone() {
+        TodoModel clone = new TodoModel(this.text, this.dueDate, this.priority);
+        clone.setId(this.id);
+        clone.setCreatedAt(this.createdAt);
+        clone.setCompleted(this.completed);
+        clone.setDoneDate();
+        return clone;
+    }
 }
