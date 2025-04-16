@@ -5,6 +5,7 @@ import com.encora.todoapp_be.model.TodoModel;
 import com.encora.todoapp_be.service.TodoService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
@@ -32,6 +33,18 @@ class TodoControllerTest {
 
     @Autowired
     private ObjectMapper objectMapper;
+
+    private TodoModel todo;
+
+    @BeforeEach
+    void setUp() {
+        todo = new TodoModel(
+            "Test Todo", 
+            null, 
+            com.encora.utils.Priority.High
+        );
+        todo.setId(1L);
+    }
 
     @Test
     void testGetFilteredTodos() throws Exception {
@@ -95,8 +108,7 @@ class TodoControllerTest {
 
     @Test
     void testMarkTodoAsDone() throws Exception {
-        TodoModel todo = new TodoModel();
-        todo.setCompleted(true);
+        todo.setCompleted(false);
 
         Mockito.when(todoService.markTodoAsDone(1L)).thenReturn(todo);
 
@@ -107,14 +119,14 @@ class TodoControllerTest {
 
     @Test
     void testMarkTodoAsUndone() throws Exception {
-        TodoModel todo = new TodoModel();
-        todo.setCompleted(false);
+        todo.setCompleted(true);
 
         Mockito.when(todoService.markTodoAsUndone(1L)).thenReturn(todo);
 
         mockMvc.perform(put("/api/todos/1/undone"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.completed").value(false));
+                .andExpect(jsonPath("$.completed").value(false))
+                .andExpect(jsonPath("$.doneDate").doesNotExist());
     }
 
     @Test

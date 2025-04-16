@@ -27,11 +27,6 @@ public class TodoModel {
 
     private Integer dueDateProximity;
 
-    public TodoModel() {
-        this.createdAt = Instant.now();
-        this.completed = false;
-    }
-
     public TodoModel(String text, LocalDate dueDate, Priority priority) {
         this.createdAt = Instant.now();
         this.text = text;
@@ -86,7 +81,11 @@ public class TodoModel {
         return this.doneDate;
     }
     public void setDoneDate() {
-        this.doneDate = Instant.now();
+        if (this.doneDate == null) {
+            this.doneDate = Instant.now();
+        } else {
+            this.doneDate = null; 
+        }
     }
 
     public boolean isCompleted() {
