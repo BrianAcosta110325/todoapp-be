@@ -81,7 +81,11 @@ public class TodoModel {
         return this.doneDate;
     }
     public void setDoneDate() {
-        this.doneDate = Instant.now();
+        if (this.doneDate == null) {
+            this.doneDate = Instant.now();
+        } else {
+            this.doneDate = null; 
+        }
     }
 
     public boolean isCompleted() {
@@ -102,5 +106,15 @@ public class TodoModel {
     }
     public void setDueDateProximity(Integer dueDateProximity) {
         this.dueDateProximity = dueDateProximity;
+    }
+
+    // Clone
+    public TodoModel clone() {
+        TodoModel clone = new TodoModel(this.text, this.dueDate, this.priority);
+        clone.setId(this.id);
+        clone.setCreatedAt(this.createdAt);
+        clone.setCompleted(this.completed);
+        clone.setDoneDate();
+        return clone;
     }
 }
