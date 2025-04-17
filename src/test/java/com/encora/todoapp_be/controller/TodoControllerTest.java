@@ -108,7 +108,7 @@ class TodoControllerTest {
 
     @Test
     void testMarkTodoAsDone() throws Exception {
-        todo.setCompleted(false);
+        todo.setCompleted(true);
 
         Mockito.when(todoService.markTodoAsDone(1L)).thenReturn(todo);
 
@@ -119,7 +119,7 @@ class TodoControllerTest {
 
     @Test
     void testMarkTodoAsUndone() throws Exception {
-        todo.setCompleted(true);
+        todo.setCompleted(false);
 
         Mockito.when(todoService.markTodoAsUndone(1L)).thenReturn(todo);
 
