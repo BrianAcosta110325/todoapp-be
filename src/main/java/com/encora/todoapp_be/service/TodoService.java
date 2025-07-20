@@ -1,5 +1,6 @@
 package com.encora.todoapp_be.service;
 
+import com.encora.todoapp_be.dto.TodoFilterDTO;
 import com.encora.todoapp_be.dto.UpdateTodoDTO;
 import com.encora.todoapp_be.model.TodoModel;
 import com.encora.utils.DeclarationUtils;
@@ -18,30 +19,26 @@ public class TodoService {
         this.todoRepository = todoRepository;
     }
 
-    public Map<String, Object> getTodosWithPagination(
-      Integer page, 
-      Integer size, 
-      String dueDateSort, 
-      String prioritySort, 
-      String text, 
-      Boolean completed, 
-      List<String> priority) {
+    public Map<String, Object> getTodosWithPagination(TodoFilterDTO filter) {
+        Integer page = filter.getPage();
+        Integer size = filter.getSize();
+        String dueDateSort = filter.getDueDateSort();
+        String prioritySort = filter.getPrioritySort();
+        String text = filter.getText();
+        Boolean completed = filter.getCompleted();
+        List<String> priorities = filter.getPriorities();
 
         List<TodoModel> todos = todoRepository.findAll();
         List<TodoModel> filteredTodos = new ArrayList<>();
 
         for (TodoModel todo : todos) {
-            if (text != null && 
-                !text.isEmpty() && 
-                !todo.getText().toLowerCase().contains(text.toLowerCase())) {
+            if (text != null && !text.isEmpty() && !todo.getText().toLowerCase().contains(text.toLowerCase())) {
                 continue;
             }
             if (completed != null && todo.isCompleted() != completed) {
                 continue;
             }
-            if (priority != null && 
-                !priority.isEmpty() && 
-                !priority.contains(todo.getPriority().toString())) {
+            if (priorities != null && !priorities.isEmpty() && !priorities.contains(todo.getPriority().toString())) {
                 continue;
             }
             todo.setDueDateProximity(DeclarationUtils.getDueDateProximity(todo.getDueDate()));
@@ -50,29 +47,27 @@ public class TodoService {
 
         if (dueDateSort != null && !dueDateSort.isEmpty()) {
             filteredTodos.sort(Comparator.comparing(TodoModel::getDueDate, Comparator.nullsLast(Comparator.naturalOrder())));
-            if (dueDateSort.equals("asc")) Collections.reverse(filteredTodos);
+            if (dueDateSort.equalsIgnoreCase("desc")) Collections.reverse(filteredTodos);
         }
 
         if (prioritySort != null && !prioritySort.isEmpty()) {
             filteredTodos.sort(Comparator.comparingInt(t -> DeclarationUtils.getPriorityValue(t.getPriority())));
-            if (prioritySort.equals("desc")) Collections.reverse(filteredTodos);
+            if (prioritySort.equalsIgnoreCase("desc")) Collections.reverse(filteredTodos);
         }
 
-        // Pagination
         int fromIndex = Math.min(page * size, filteredTodos.size());
         int toIndex = Math.min(fromIndex + size, filteredTodos.size());
 
-        // Metrics
         Map<String, String> metrics = PaginationUtils.getMetricsValue(todos);
 
-        // Response as Map
         Map<String, Object> response = new HashMap<>();
         response.put("data", filteredTodos.subList(fromIndex, toIndex));
-        response.put("totalPages", (int) Math.ceil((double) (filteredTodos.size()) / size));
+        response.put("totalPages", (int) Math.ceil((double) filteredTodos.size() / size));
         response.putAll(metrics);
 
         return response;
     }
+
 
     public TodoModel addTodo(TodoModel todo) {
         return todoRepository.save(todo);

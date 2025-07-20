@@ -1,5 +1,6 @@
 package com.encora.todoapp_be.controller;
 
+import com.encora.todoapp_be.dto.TodoFilterDTO;
 import com.encora.todoapp_be.dto.UpdateTodoDTO;
 import com.encora.todoapp_be.model.TodoModel;
 import com.encora.todoapp_be.service.TodoService;
@@ -50,7 +51,7 @@ class TodoControllerTest {
     void testGetFilteredTodos() throws Exception {
         Map<String, Object> response = new HashMap<>();
         response.put("data", List.of());
-        Mockito.when(todoService.getTodosWithPagination(any(), any(), any(), any(), any(), any(), any()))
+        Mockito.when(todoService.getTodosWithPagination(any(TodoFilterDTO.class)))
                 .thenReturn(response);
 
         mockMvc.perform(get("/api/todos"))

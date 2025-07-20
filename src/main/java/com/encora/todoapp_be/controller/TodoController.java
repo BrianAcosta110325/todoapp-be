@@ -3,6 +3,7 @@ package com.encora.todoapp_be.controller;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import jakarta.validation.Valid;
 
@@ -10,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.encora.todoapp_be.dto.TodoFilterDTO;
 import com.encora.todoapp_be.dto.UpdateTodoDTO;
 import com.encora.todoapp_be.model.TodoModel;
 import com.encora.todoapp_be.service.TodoService;
@@ -34,26 +37,10 @@ public class TodoController {
     }
 
     @GetMapping("/todos")
-    public Map<String, Object> getFilteredTodos(
-            @RequestParam(required = false, defaultValue = "0") Integer page,
-            @RequestParam(required = false, defaultValue = "10") Integer size,
-            @RequestParam(required = false, defaultValue = "") String dueDateSort,
-            @RequestParam(required = false, defaultValue = "") String prioritySort,
-            @RequestParam(required = false) String text,
-            @RequestParam(required = false) Boolean completed,
-            @RequestParam(required = false, name = "priorities") String priority
-        ) {
-        // Use example: http://localhost:8080/api/todos?page=0&size=10&dueDateSort=true&prioritySort=true&text=example&completed=true&priorities=High,Medium
-        return todoService.getTodosWithPagination(
-            page,
-            size,
-            dueDateSort,
-            prioritySort,
-            text,
-            completed,
-            priority != null ? List.of(priority.split(",")) : Collections.emptyList()
-        );
+    public Map<String, Object> getFilteredTodos(@ModelAttribute TodoFilterDTO filter) {
+        return todoService.getTodosWithPagination(filter);
     }
+
   
     @PostMapping("/todos")
     public ResponseEntity<TodoModel> addTodo(@Valid @RequestBody TodoModel todo) {
@@ -62,13 +49,11 @@ public class TodoController {
     }
 
     @PutMapping("/todos/{id}")
-    public ResponseEntity<TodoModel> updateTodo(
-            @PathVariable Long id,
-            @Valid @RequestBody UpdateTodoDTO updateTodo) {
-
+    public ResponseEntity<TodoModel> updateTodo(@PathVariable Long id, @Valid @RequestBody UpdateTodoDTO updateTodo) {
         updateTodo.setId(id);
-        TodoModel updatedTodo = todoService.updateTodo(updateTodo);
-        return ResponseEntity.ok(updatedTodo);
+        return Optional.ofNullable(todoService.updateTodo(updateTodo))
+                    .map(ResponseEntity::ok)
+                    .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping("/todos/{id}/done")
