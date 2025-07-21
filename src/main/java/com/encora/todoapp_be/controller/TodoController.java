@@ -69,7 +69,6 @@ public class TodoController {
         return ResponseEntity.noContent().build();
     }
 
-    // Example patch endpoint for toggling done status instead of separate done/undone endpoints
     @PatchMapping("/{id}/completed")
     public ResponseEntity<TodoResponseDTO> toggleCompleted(@PathVariable Long id) {
         TodoModel updated = todoService.setCompletedStatus(id);
