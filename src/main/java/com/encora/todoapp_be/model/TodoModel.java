@@ -90,6 +90,10 @@ public class TodoModel {
         }
     }
 
+    public void clearDoneDate() {
+        this.doneDate = null;  // assuming doneDate is a field in TodoModel
+    }
+
     public boolean isCompleted() {
         return this.completed;
     }
