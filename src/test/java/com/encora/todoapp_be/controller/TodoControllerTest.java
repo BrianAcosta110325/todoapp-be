@@ -92,26 +92,27 @@ class TodoControllerTest {
 
     @Test
     void testUpdateTodo() throws Exception {
-        UpdateTodoDTO updateDto = new UpdateTodoDTO();
-        updateDto.setText("Updated");
+    UpdateTodoDTO updateDto = new UpdateTodoDTO();
+    updateDto.setText("Updated");
 
-        TodoModel updatedTodo = new TodoModel("Updated", null, com.encora.utils.Priority.High);
+    TodoModel updatedTodo = new TodoModel("Updated", null, com.encora.utils.Priority.High);
+    updatedTodo.setId(1L);
 
-        Mockito.when(todoService.updateTodo(any(UpdateTodoDTO.class)))
-                .thenReturn(updatedTodo);
+    Mockito.when(todoService.updateTodo(any(UpdateTodoDTO.class)))
+            .thenReturn(Optional.of(updatedTodo));
 
-        mockMvc.perform(put("/api/todos/1")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(updateDto)))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.text").value("Updated"));
+    mockMvc.perform(put("/api/todos/1")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(objectMapper.writeValueAsString(updateDto)))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.text").value("Updated"));
     }
 
     @Test
     void testMarkTodoAsDone() throws Exception {
         todo.setCompleted(true);
 
-        Mockito.when(todoService.markTodoAsDone(1L)).thenReturn(todo);
+        Mockito.when(todoService.setCompletedStatus(1L)).thenReturn(todo);
 
         mockMvc.perform(post("/api/todos/1/done"))
                 .andExpect(status().isOk())
@@ -122,7 +123,7 @@ class TodoControllerTest {
     void testMarkTodoAsUndone() throws Exception {
         todo.setCompleted(false);
 
-        Mockito.when(todoService.markTodoAsUndone(1L)).thenReturn(todo);
+        Mockito.when(todoService.setCompletedStatus(1L)).thenReturn(todo);
 
         mockMvc.perform(put("/api/todos/1/undone"))
                 .andExpect(status().isOk())

@@ -2,6 +2,8 @@ package com.encora.todoapp_be.model;
 
 import java.time.Instant;
 import java.time.LocalDate;
+import java.util.Optional;
+
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -116,5 +118,10 @@ public class TodoModel {
         clone.setCompleted(this.completed);
         clone.setDoneDate();
         return clone;
+    }
+
+    public Optional<TodoModel> map(Object object) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'map'");
     }
 }

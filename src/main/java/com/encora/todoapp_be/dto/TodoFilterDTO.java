@@ -5,14 +5,13 @@ import java.util.Arrays;
 import java.util.List;
 
 public class TodoFilterDTO {
-
     private Integer page = 0;
     private Integer size = 10;
-    private String dueDateSort;    // Expected values: "asc", "desc", or null
-    private String prioritySort;   // Expected values: "asc", "desc", or null
     private String text;
     private Boolean completed;
-    private List<String> priorities = new ArrayList<>();
+    private List<String> priorities;
+    private String dueDateSort;
+    private String prioritySort;
 
     public Integer getPage() {
         return page;

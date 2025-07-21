@@ -89,18 +89,19 @@ public class TodoServiceTest {
         when(todoRepository.findById(1L)).thenReturn(Optional.of(todoModel));
         when(todoRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
 
-        TodoModel result = todoService.updateTodo(update);
+        Optional<TodoModel> result = todoService.updateTodo(update);
 
-        assertNotNull(result);
-        assertEquals("New text", result.getText());
+        assertTrue(result.isPresent());
+        assertEquals("New text", result.get().getText());
     }
+
 
     @Test
     void testMarkTodoAsDone() {
         when(todoRepository.findById(1L)).thenReturn(Optional.of(todoModel));
         when(todoRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
 
-        TodoModel result = todoService.markTodoAsDone(1L);
+        TodoModel result = todoService.setCompletedStatus(1L);
 
         assertTrue(result.isCompleted());
         assertNotNull(result.getDoneDate());
@@ -115,7 +116,7 @@ public class TodoServiceTest {
         when(todoRepository.findById(1L)).thenReturn(Optional.of(todoModel));
         when(todoRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
 
-        TodoModel result = todoService.markTodoAsUndone(1L);
+        TodoModel result = todoService.setCompletedStatus(1L);
 
         assertFalse(result.isCompleted());
         assertNull(result.getDoneDate());

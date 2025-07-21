@@ -73,19 +73,17 @@ public class TodoService {
         return todoRepository.save(todo);
     }
 
-    public TodoModel updateTodo(UpdateTodoDTO updateTodo) {
-        Optional<TodoModel> optional = todoRepository.findById(updateTodo.getId());
-        if (optional.isPresent()) {
-            TodoModel todo = optional.get();
-            if (updateTodo.getText() != null) todo.setText(updateTodo.getText());
-            if (updateTodo.getDueDate() != null) todo.setDueDate(updateTodo.getDueDate());
-            if (updateTodo.getPriority() != null) todo.setPriority(updateTodo.getPriority());
-            return todoRepository.save(todo);
-        }
-        return null;
+    public Optional<TodoModel> updateTodo(UpdateTodoDTO dto) {
+        return todoRepository.findById(dto.getId())
+            .map(existing -> {
+                existing.setText(dto.getText());
+                existing.setPriority(dto.getPriority());
+                existing.setDueDate(dto.getDueDate());
+                return todoRepository.save(existing);
+            });
     }
 
-    public TodoModel markTodoAsDone(Long id) {
+    public TodoModel setCompletedStatus(Long id) {
         Optional<TodoModel> optional = todoRepository.findById(id);
         if (optional.isPresent()) {
             TodoModel todo = optional.get();
@@ -93,16 +91,7 @@ public class TodoService {
                 todo.setCompleted(true);
                 todo.setDoneDate();
                 return todoRepository.save(todo);
-            }
-        }
-        return null;
-    }
-
-    public TodoModel markTodoAsUndone(Long id) {
-        Optional<TodoModel> optional = todoRepository.findById(id);
-        if (optional.isPresent()) {
-            TodoModel todo = optional.get();
-            if (todo.isCompleted()) {
+            } else {
                 todo.setCompleted(false);
                 todo.setDoneDate();
                 return todoRepository.save(todo);
