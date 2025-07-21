@@ -7,7 +7,11 @@ import com.encora.utils.Priority;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 public class CreateTodoDTO {
 
     @NotNull(message = "Text cannot be null")
@@ -19,29 +23,4 @@ public class CreateTodoDTO {
 
     @NotNull(message = "Priority cannot be null")
     private Priority priority;
-
-    // Getters and setters
-    public String getText() {
-        return text;
-    }
-
-    public void setText(String text) {
-        this.text = text;
-    }
-
-    public LocalDate getDueDate() {
-        return dueDate;
-    }
-
-    public void setDueDate(LocalDate dueDate) {
-        this.dueDate = dueDate;
-    }
-
-    public Priority getPriority() {
-        return priority;
-    }
-
-    public void setPriority(Priority priority) {
-        this.priority = priority;
-    }
 }

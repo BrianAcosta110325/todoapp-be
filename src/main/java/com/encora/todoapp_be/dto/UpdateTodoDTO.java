@@ -7,7 +7,12 @@ import com.encora.utils.Priority;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.Getter;
+import lombok.Setter;
 
+
+@Getter
+@Setter
 public class UpdateTodoDTO {
     private Long id;
     
@@ -22,30 +27,4 @@ public class UpdateTodoDTO {
     private LocalDate dueDate;
 
     private Priority priority;
-
-    // Getters y Setters
-    public Long getId() {
-        return id;
-    }
-    public void setId(Long id) {
-        this.id = id;
-    }
-    public String getText() {
-        return text;
-    }
-    public void setText(String text) {
-        this.text = text;
-    }
-    public LocalDate getDueDate() {
-        return dueDate;
-    }
-    public void setDueDate(LocalDate dueDate) {
-        this.dueDate = dueDate;
-    }
-    public Priority getPriority() {
-        return priority;
-    }
-    public void setPriority(Priority priority) {
-        this.priority = priority;
-    }
 }

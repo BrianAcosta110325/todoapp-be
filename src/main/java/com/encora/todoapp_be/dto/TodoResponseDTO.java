@@ -6,6 +6,12 @@ import java.time.LocalDate;
 import com.encora.todoapp_be.model.TodoModel;
 import com.encora.utils.Priority;
 
+import lombok.Getter;
+import lombok.Setter;
+
+
+@Getter
+@Setter
 public class TodoResponseDTO {
 
     private Long id;
@@ -26,38 +32,5 @@ public class TodoResponseDTO {
         this.completed = model.isCompleted();
         this.priority = model.getPriority();
         this.dueDateProximity = model.getDueDateProximity();
-    }
-
-    // Getters only, read-only DTO
-    public Long getId() {
-        return id;
-    }
-
-    public Instant getCreatedAt() {
-        return createdAt;
-    }
-
-    public String getText() {
-        return text;
-    }
-
-    public LocalDate getDueDate() {
-        return dueDate;
-    }
-
-    public Instant getDoneDate() {
-        return doneDate;
-    }
-
-    public Boolean getCompleted() {
-        return completed;
-    }
-
-    public Priority getPriority() {
-        return priority;
-    }
-
-    public Integer getDueDateProximity() {
-        return dueDateProximity;
     }
 }
