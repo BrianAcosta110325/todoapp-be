@@ -1,6 +1,7 @@
 package com.encora.todoapp_be.service;
 
 import com.encora.todoapp_be.model.TodoModel;
+import com.encora.todoapp_be.dto.TodoFilterDTO;
 import com.encora.todoapp_be.dto.UpdateTodoDTO;
 import com.encora.utils.TodoRepository;
 
@@ -33,6 +34,7 @@ public class TodoServiceTest {
         todoModel.setCompleted(false);
     }
 
+    // inside testGetTodosWithPaginationAndFilters()
     @Test
     void testGetTodosWithPaginationAndFilters() {
         todoModel.setDueDate(LocalDate.now().plusDays(1));
@@ -46,15 +48,16 @@ public class TodoServiceTest {
         List<TodoModel> todos = List.of(todoModel, todo2);
         when(todoRepository.findAll()).thenReturn(todos);
 
-        Map<String, Object> result = todoService.getTodosWithPagination(
-                0,       
-                10,      
-                "desc",   
-                "asc",   
-                "test",     
-                true,     
-                List.of("Medium")
-        );
+        TodoFilterDTO filter = new TodoFilterDTO();
+        filter.setPage(0);
+        filter.setSize(10);
+        filter.setDueDateSort("desc");
+        filter.setPrioritySort("asc");
+        filter.setText("test");
+        filter.setCompleted(true);
+        filter.setPriorities("Medium");  // Using the setter with comma-separated string
+
+        Map<String, Object> result = todoService.getTodosWithPagination(filter);
 
         List<TodoModel> data = (List<TodoModel>) result.get("data");
 
@@ -66,6 +69,7 @@ public class TodoServiceTest {
         assertNotNull(result.get("averageMediumTimeDifference"));
         assertNotNull(result.get("averageHighTimeDifference"));
     }
+
 
     @Test
     void testAddTodo() {
@@ -85,18 +89,19 @@ public class TodoServiceTest {
         when(todoRepository.findById(1L)).thenReturn(Optional.of(todoModel));
         when(todoRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
 
-        TodoModel result = todoService.updateTodo(update);
+        Optional<TodoModel> result = todoService.updateTodo(update);
 
-        assertNotNull(result);
-        assertEquals("New text", result.getText());
+        assertTrue(result.isPresent());
+        assertEquals("New text", result.get().getText());
     }
+
 
     @Test
     void testMarkTodoAsDone() {
         when(todoRepository.findById(1L)).thenReturn(Optional.of(todoModel));
         when(todoRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
 
-        TodoModel result = todoService.markTodoAsDone(1L);
+        TodoModel result = todoService.setCompletedStatus(1L);
 
         assertTrue(result.isCompleted());
         assertNotNull(result.getDoneDate());
@@ -111,7 +116,7 @@ public class TodoServiceTest {
         when(todoRepository.findById(1L)).thenReturn(Optional.of(todoModel));
         when(todoRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
 
-        TodoModel result = todoService.markTodoAsUndone(1L);
+        TodoModel result = todoService.setCompletedStatus(1L);
 
         assertFalse(result.isCompleted());
         assertNull(result.getDoneDate());

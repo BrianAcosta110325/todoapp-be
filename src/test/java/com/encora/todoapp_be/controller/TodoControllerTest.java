@@ -1,5 +1,6 @@
 package com.encora.todoapp_be.controller;
 
+import com.encora.todoapp_be.dto.TodoFilterDTO;
 import com.encora.todoapp_be.dto.UpdateTodoDTO;
 import com.encora.todoapp_be.model.TodoModel;
 import com.encora.todoapp_be.service.TodoService;
@@ -50,7 +51,7 @@ class TodoControllerTest {
     void testGetFilteredTodos() throws Exception {
         Map<String, Object> response = new HashMap<>();
         response.put("data", List.of());
-        Mockito.when(todoService.getTodosWithPagination(any(), any(), any(), any(), any(), any(), any()))
+        Mockito.when(todoService.getTodosWithPagination(any(TodoFilterDTO.class)))
                 .thenReturn(response);
 
         mockMvc.perform(get("/api/todos"))
@@ -60,7 +61,6 @@ class TodoControllerTest {
 
     @Test
     void testAddTodo() throws Exception {
-        // Test case for valid input
         TodoModel validTodo = new TodoModel("Test Todo", null, com.encora.utils.Priority.High);
 
         Mockito.when(todoService.addTodo(any(TodoModel.class)))
@@ -69,7 +69,7 @@ class TodoControllerTest {
         mockMvc.perform(post("/api/todos")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(validTodo)))
-                .andExpect(status().isOk())
+                .andExpect(status().isCreated()) // expect 201 Created
                 .andExpect(jsonPath("$.text").value("Test Todo"));
 
         // Test case for empty text
@@ -95,11 +95,12 @@ class TodoControllerTest {
         updateDto.setText("Updated");
 
         TodoModel updatedTodo = new TodoModel("Updated", null, com.encora.utils.Priority.High);
+        updatedTodo.setId(1L);
 
         Mockito.when(todoService.updateTodo(any(UpdateTodoDTO.class)))
-                .thenReturn(updatedTodo);
+                .thenReturn(Optional.of(updatedTodo));
 
-        mockMvc.perform(put("/api/todos/1")
+        mockMvc.perform(patch("/api/todos/1")  // Use PATCH, not PUT
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(updateDto)))
                 .andExpect(status().isOk())
@@ -110,9 +111,9 @@ class TodoControllerTest {
     void testMarkTodoAsDone() throws Exception {
         todo.setCompleted(true);
 
-        Mockito.when(todoService.markTodoAsDone(1L)).thenReturn(todo);
+        Mockito.when(todoService.setCompletedStatus(1L)).thenReturn(todo);
 
-        mockMvc.perform(post("/api/todos/1/done"))
+        mockMvc.perform(patch("/api/todos/1/completed"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.completed").value(true));
     }
@@ -121,9 +122,9 @@ class TodoControllerTest {
     void testMarkTodoAsUndone() throws Exception {
         todo.setCompleted(false);
 
-        Mockito.when(todoService.markTodoAsUndone(1L)).thenReturn(todo);
+        Mockito.when(todoService.setCompletedStatus(1L)).thenReturn(todo);
 
-        mockMvc.perform(put("/api/todos/1/undone"))
+        mockMvc.perform(patch("/api/todos/1/completed"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.completed").value(false))
                 .andExpect(jsonPath("$.doneDate").doesNotExist());
